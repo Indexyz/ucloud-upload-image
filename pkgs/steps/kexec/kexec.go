@@ -11,7 +11,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-var imageUrl = utils.EnvOr("KEXEC_IMAGE_OVERRIDE", "https://github.com/nix-community/nixos-images/releases/download/nixos-25.11/nixos-kexec-installer-noninteractive-x86_64-linux.tar.gz")
+var imageUrl = utils.EnvOr("KEXEC_IMAGE_OVERRIDE", "https://github.com/nix-community/nixos-images/releases/latest/download/nixos-kexec-installer-noninteractive-x86_64-linux.tar.gz")
 
 func RunInstanceIntoKexec(client *ssh.Client, perferLocal bool) error {
 	var err error
@@ -32,7 +32,7 @@ func RunInstanceIntoKexec(client *ssh.Client, perferLocal bool) error {
 			return errors.WithStack(err)
 		}
 	} else {
-		_, err = sshutil.Run(client, fmt.Sprintf("wget -O kexec.tar.gz %q", imageUrl), sshutil.NewNullReader())
+		err = sshutil.RunStdout(client, fmt.Sprintf("wget -O kexec.tar.gz %q", imageUrl), sshutil.NewNullReader())
 		if err != nil {
 			return errors.WithStack(err)
 		}
