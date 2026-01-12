@@ -169,6 +169,23 @@ func main() {
 		createImage = false
 	}
 
+	for {
+		info, err := queryInstance()
+
+		if err != nil {
+			logrus.Warnf("query instance error: %v", err)
+			time.Sleep(time.Second * 10)
+			continue
+		}
+
+		state := info.UHostSet[0].State
+		if strings.EqualFold(state, "Stopped") {
+			break
+		}
+
+		logrus.Infof("vm state %s, wait stop", state)
+	}
+
 	deleteKeyPair := hostClient.NewDeleteUHostKeyPairsRequest()
 	deleteKeyPair.KeyPairIds = []string{createKeyPairResponse.KeyPairId}
 	_, err = hostClient.DeleteUHostKeyPairs(deleteKeyPair)
