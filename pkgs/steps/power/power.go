@@ -1,7 +1,7 @@
 package power
 
 import (
-	"github.com/5aaee9/ucloud-upload-image/pkgs/sshutil"
+	"github.com/indexyz/ucloud-upload-image/pkgs/sshutil"
 	"golang.org/x/crypto/ssh"
 )
 

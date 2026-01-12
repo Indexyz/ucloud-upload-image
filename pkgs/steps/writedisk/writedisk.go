@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/5aaee9/ucloud-upload-image/pkgs/sshutil"
+	"github.com/indexyz/ucloud-upload-image/pkgs/sshutil"
 	"github.com/pingcap/errors"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"

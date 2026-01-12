@@ -1,4 +1,4 @@
-module github.com/5aaee9/ucloud-upload-image
+module github.com/indexyz/ucloud-upload-image
 
 go 1.25.5
 

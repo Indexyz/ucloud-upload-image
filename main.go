@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/5aaee9/ucloud-upload-image/pkgs/sshutil"
-	"github.com/5aaee9/ucloud-upload-image/pkgs/task"
+	"github.com/indexyz/ucloud-upload-image/pkgs/sshutil"
+	"github.com/indexyz/ucloud-upload-image/pkgs/task"
 	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
 	"github.com/ucloud/ucloud-sdk-go/services/uhost"

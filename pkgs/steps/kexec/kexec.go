@@ -6,8 +6,8 @@ import (
 
 	"github.com/pingcap/errors"
 
-	"github.com/5aaee9/ucloud-upload-image/pkgs/sshutil"
-	"github.com/5aaee9/ucloud-upload-image/pkgs/utils"
+	"github.com/indexyz/ucloud-upload-image/pkgs/sshutil"
+	"github.com/indexyz/ucloud-upload-image/pkgs/utils"
 	"golang.org/x/crypto/ssh"
 )
 
