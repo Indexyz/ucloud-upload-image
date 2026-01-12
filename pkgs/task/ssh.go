@@ -2,12 +2,14 @@ package task
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"github.com/indexyz/ucloud-upload-image/pkgs/sshutil"
 	"github.com/indexyz/ucloud-upload-image/pkgs/steps/kexec"
 	"github.com/indexyz/ucloud-upload-image/pkgs/steps/power"
 	"github.com/indexyz/ucloud-upload-image/pkgs/steps/writedisk"
+	"github.com/indexyz/ucloud-upload-image/pkgs/utils"
 	"github.com/pingcap/errors"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
@@ -43,7 +45,7 @@ func RunStepHost(task *TaskContext) error {
 	}
 	logrus.Infof("start run vm into kexec env")
 
-	err = kexec.RunInstanceIntoKexec(client, true)
+	err = kexec.RunInstanceIntoKexec(client, !utils.Yes(os.Getenv("KEXEC_IMAGE_PREFER_REMOTE")))
 	if err != nil {
 		return errors.WithStack(err)
 	}
