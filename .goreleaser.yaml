@@ -1,0 +1,87 @@
+# .goreleaser.yaml
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    binary: ucloud-upload-image
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+      - -X main.builtBy=goreleaser
+
+archives:
+  - id: tarball
+    formats: [tar.gz]
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ tolower .Os }}-{{ .Arch }}"
+    files:
+      - README.md
+      - LICENSE*
+  - id: zipball
+    formats: [zip]
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ tolower .Os }}-{{ .Arch }}"
+    files:
+      - README.md
+      - LICENSE*
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: "v{{ .Version }}-next-{{ .ShortCommit }}"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - '^style:'
+      - '^refactor:'
+      - Merge pull request
+      - Merge branch
+
+release:
+  github:
+    owner: 5aaee9
+    name: ucloud-upload-image
+  draft: false
+  prerelease: auto
+  name_template: "{{.ProjectName}} v{{.Version}}"
+  header: |
+    ## 🎉 Release {{.Version}}
+    
+    Welcome to this new release!
+  footer: |
+    ## 📦 Installation
+    
+    ### Homebrew
+    ```bash
+    brew install 5aaee9/tap/ucloud-upload-image
+    ```
+    
+    ### Binary
+    Download the appropriate binary for your system from the assets below.
+    
+    ---
+    
+    **Full Changelog**: https://github.com/5aaee9/ucloud-upload-image/compare/{{.PreviousTag}}...{{.Tag}}
