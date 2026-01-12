@@ -21,6 +21,7 @@ var region = ""
 var name = ""
 var imageUrl = ""
 var format = "raw"
+var imageWriteOutFile = ""
 
 var networkType = "Bgp"
 
@@ -31,6 +32,7 @@ func init() {
 	flag.StringVar(&imageUrl, "image", "", "image local path or download url")
 	flag.StringVar(&format, "format", "raw", "image format, available: raw, bz2, xz, zstd")
 	flag.StringVar(&networkType, "network-type", "Bgp", "main interface network type, default Bgp")
+	flag.StringVar(&imageWriteOutFile, "image-write-out-file", "", "write image id to this file when set")
 
 	flag.Parse()
 }
@@ -239,5 +241,12 @@ func main() {
 	_, err = hostClient.TerminateUHostInstance(termHostRequest)
 	if err != nil {
 		panic(err)
+	}
+
+	if len(imageWriteOutFile) > 0 {
+		err := os.WriteFile(imageWriteOutFile, []byte(strings.Join(hostInstance.UHostIds, "\n")), 0o644)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
