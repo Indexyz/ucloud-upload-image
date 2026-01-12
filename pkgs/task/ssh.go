@@ -58,20 +58,17 @@ func RunStepHost(task *TaskContext) error {
 	// Wait reconnect
 	client, err = sshutil.Connect(context.Background(), task.ConnectIP, sshClientConfig)
 	if err != nil {
-		panic(err)
+		return errors.WithStack(err)
 	}
 
 	err = writedisk.WriteDiskImage(client, task.ImagePath, task.ImageFormat)
 	if err != nil {
-		panic(err)
+		return errors.WithStack(err)
 	}
 
 	logrus.Infof("==> power off machine")
-	err = power.PowerOff(client)
-	if err != nil {
-		panic(err)
-	}
 
+	_ = power.PowerOff(client)
 	_ = client.Close()
 
 	return nil
