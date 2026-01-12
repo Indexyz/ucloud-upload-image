@@ -234,6 +234,8 @@ func main() {
 
 	termHostRequest := hostClient.NewTerminateUHostInstanceRequest()
 	termHostRequest.UHostId = ucloud.String(hostInstance.UHostIds[0])
+	termHostRequest.ReleaseEIP = ucloud.Bool(true)
+	termHostRequest.ReleaseUDisk = ucloud.Bool(true)
 	_, err = hostClient.TerminateUHostInstance(termHostRequest)
 	if err != nil {
 		panic(err)
