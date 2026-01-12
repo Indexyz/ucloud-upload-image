@@ -13,9 +13,9 @@ import (
 
 var imageUrl = utils.EnvOr("KEXEC_IMAGE_OVERRIDE", "https://github.com/nix-community/nixos-images/releases/latest/download/nixos-kexec-installer-noninteractive-x86_64-linux.tar.gz")
 
-func RunInstanceIntoKexec(client *ssh.Client, perferLocal bool) error {
+func RunInstanceIntoKexec(client *ssh.Client, preferLocal bool) error {
 	var err error
-	if perferLocal {
+	if preferLocal {
 		resp, err := http.Get(imageUrl)
 		if err != nil {
 			return errors.WithStack(err)

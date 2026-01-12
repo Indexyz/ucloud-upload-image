@@ -32,6 +32,7 @@ func RunStdout(client *ssh.Client, cmd string, stdin io.Reader) error {
 	if stdin != nil {
 		sess.Stdin = stdin
 		sess.Stdout = os.Stdout
+		sess.Stderr = os.Stderr
 	}
 
 	return sess.Run(cmd)

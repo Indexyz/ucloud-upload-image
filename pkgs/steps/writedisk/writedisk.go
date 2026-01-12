@@ -12,8 +12,8 @@ import (
 )
 
 func WriteDiskImage(client *ssh.Client, url string, format string) error {
-	logrus.Infof("==> blkdiscard disk")
-	err := sshutil.RunStdout(client, "blkdiscard /dev/vda", nil)
+	logrus.Infof("==> clean disk")
+	err := sshutil.RunStdout(client, "wipefs -af /dev/vda", nil)
 	if err != nil {
 		return err
 	}
