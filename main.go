@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/indexyz/ucloud-upload-image/pkgs/sshutil"
 	"github.com/indexyz/ucloud-upload-image/pkgs/task"
@@ -96,14 +95,13 @@ func main() {
 		createImage = false
 	}
 
-	uc.WaitStopped(hostIDs)
-
 	err = uc.DeleteKeyPair(keyPairID)
 	if err != nil {
-		panic(err)
+		logrus.Warnf("delete keypair error: %v", err)
 	}
 
 	if createImage {
+		uc.WaitStopped(hostIDs)
 		imageID, err := uc.CreateCustomImage(hostIDs[0], name)
 		if err != nil {
 			panic(err)
@@ -111,6 +109,13 @@ func main() {
 
 		logrus.Infof("image id: %s", imageID)
 		uc.WaitImageDone(imageID)
+
+		if len(imageWriteOutFile) > 0 {
+			err := os.WriteFile(imageWriteOutFile, []byte(imageID), 0o644)
+			if err != nil {
+				panic(err)
+			}
+		}
 	}
 
 	err = uc.TerminateInstance(hostIDs[0], true, true)
@@ -118,10 +123,4 @@ func main() {
 		panic(err)
 	}
 
-	if len(imageWriteOutFile) > 0 {
-		err := os.WriteFile(imageWriteOutFile, []byte(strings.Join(hostIDs, "\n")), 0o644)
-		if err != nil {
-			panic(err)
-		}
-	}
 }
