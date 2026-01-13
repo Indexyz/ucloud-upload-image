@@ -2,3 +2,4 @@ id_*
 *.raw
 *.raw.zst
 .idea
+logs/
